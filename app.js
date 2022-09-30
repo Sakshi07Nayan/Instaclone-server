@@ -38,7 +38,8 @@ app.post("/uploads",(req,res)=>{
     var options ={
         day: "numeric",
         month:"long",
-        year: "numeric"
+        year: "numeric",
+        time: "numeric"
     }
     var setday = today.toLocaleDateString("en-US", options)
     console.log(setday)
