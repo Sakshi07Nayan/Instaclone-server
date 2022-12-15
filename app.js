@@ -16,6 +16,7 @@ app.listen(process.env.PORT || 3002, (err)=>{
         console.log(err)
     )
 });
+//"mongodb://localhost/instaclone"
 const mongodb = "mongodb+srv://Sakshi09:test123@instaclone.gwk4cly.mongodb.net/instaclone?retryWrites=true&w=majority"
 mongoose.connect(mongodb,(data)=>{
     console.log("Successfully connect to db")
@@ -47,7 +48,7 @@ app.post("/uploads",(req,res)=>{
     author : req.body.author,
     location : req.body.location,
     image : req.body.image,
-    likes : 15,
+    likes : req.body.likes,
     date : setday,
     description : req.body.description
   }).then((post)=>{
@@ -55,5 +56,49 @@ app.post("/uploads",(req,res)=>{
   }).catch((err)=>{
     res.status(400).send(err)
   })
+})
+app.put('/like/:_id', async(req,res)=>{
+    try{
+        await postModal.updateOne({
+            $and :[
+                {_id: {$eq : req.params._id}}
+            ]
+        },
+        {
+            $set:{
+                likes : req.body.likes
+            }
+        });
+        res.status(200).json({
+            status:"success",
+            message:"updated succefully"
+          })
+    }
+    catch(err){
+        res.status(400).json({
+            status:"failed",
+            message:err.message
+        })
+    }
+})
+
+app.get("/",(req,res)=>{
+    res.send("INSTA CLONE")
+})
+app.delete("/remove/:_id",(req,res)=>{
+    postModal.find({_id: req.params._id}).then(()=>{
+        try{
+            postModal.deleteOne({_id: req.params._id}).then((post)=>{
+                console.log("post deleted  successfully")
+                res.status(200).send("Post Deleted")
+
+            }).catch((err)=>{
+                console.log(err)
+                res.status(400).send("Post Deleted")
+            })
+        }catch(err){
+            res.status(400).send("Not find")
+        }
+    })
 })
 //working server
