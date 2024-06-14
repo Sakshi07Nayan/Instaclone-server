@@ -17,6 +17,8 @@ app.listen(process.env.PORT || 3002, (err)=>{
     )
 });
 //"mongodb://localhost/instaclone"
+// const mongodb = "mongodb+srv://Sakshi09:test123@instaclone.gwk4cly.mongodb.net/"
+
 const mongodb = "mongodb+srv://Sakshi09:test123@instaclone.gwk4cly.mongodb.net/instaclone?retryWrites=true&w=majority"
 mongoose.connect(mongodb,(data)=>{
     console.log("Successfully connect to db")
